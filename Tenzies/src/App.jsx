@@ -6,7 +6,14 @@ import Confetti from "react-confetti"
 export default function App() {
     const [dice, setDice] = useState(generateAllNewDice())
 
+    const gameWon = dice.every(die => die.isHeld) &&
+        dice.every(die => die.value === dice[0].value)
 
+    useEffect(() => {
+        if (gameWon) {
+            buttonRef.current.focus()
+        }
+    }, [gameWon])
 
     function generateAllNewDice() {
         return new Array(10)
@@ -29,16 +36,6 @@ export default function App() {
             setDice(generateAllNewDice())
         }
     }
-
-    /**
-     * Challenge: Update the `hold` function to flip
-     * the `isHeld` property on the object in the array
-     * that was clicked, based on the `id` prop passed
-     * into the function.
-     * 
-     * Hint: as usual, there's more than one way to 
-     * accomplish this.
-     */
 
     function hold(id) {
         setDice(prev => prev.map((item) => {
